@@ -1,0 +1,23 @@
+spring:
+    main:
+      banner-mode: log
+    datasource:
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: 1987
+    jpa:
+        database: postgresql
+        database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    activemq:
+        brokerUrl: tcp://localhost:61616
+        user: admin
+        password: admin
+        in-memory: true
+        pooled: false
+
+jkh:
+    url: https://dom.gosuslugi.ru/nsi/api/rest/services/nsi/fias/v4
+
+jkhlocation:
+    regionCode: 29251dcf-00a1-4e34-98d4-5c47484a36d4
+    cityCode: d76255c8-3173-4db5-a39b-badd3ebdf851
