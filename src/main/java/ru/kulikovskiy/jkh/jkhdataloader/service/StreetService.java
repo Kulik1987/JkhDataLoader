@@ -9,10 +9,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.kulikovskiy.jkh.jkhdataloader.config.JkhGosuslugiConfig;
 import ru.kulikovskiy.jkh.jkhdataloader.config.JkhLocation;
-import ru.kulikovskiy.jkh.jkhdataloader.dao.StreetRerository;
+import ru.kulikovskiy.jkh.jkhdataloader.repository.StreetRerository;
 import ru.kulikovskiy.jkh.jkhdataloader.entity.Street;
 import ru.kulikovskiy.jkh.jkhdataloader.model.JkhDataLoaderAllResponse;
-import ru.kulikovskiy.jkh.jkhdataloader.model.LocationParameter;
 import ru.kulikovskiy.jkh.jkhdataloader.model.StreetJkh;
 
 import java.net.URI;

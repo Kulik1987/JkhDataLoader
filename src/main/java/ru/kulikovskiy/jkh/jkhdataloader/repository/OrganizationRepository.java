@@ -1,4 +1,4 @@
-package ru.kulikovskiy.jkh.jkhdataloader.dao;
+package ru.kulikovskiy.jkh.jkhdataloader.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

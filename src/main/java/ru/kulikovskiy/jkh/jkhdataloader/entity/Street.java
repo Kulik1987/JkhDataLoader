@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -30,6 +31,19 @@ public class Street {
     private LocalDate createDate;
     @Column(name = "update_dt")
     private LocalDate updateDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Street)) return false;
+        Street street = (Street) o;
+        return Objects.equals(streetGuid, street.streetGuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(streetGuid);
+    }
 
     public Street(String streetGuid) {
         this.streetGuid = streetGuid;

@@ -20,6 +20,9 @@ public class Organization {
     private String phone;
     private String shortName;
     private String fullName;
+    private String inn;
+    private String kpp;
+    private String ogrn;
     private String orgResponse;
     private LocalDate createDt;
     private LocalDate updateDt;

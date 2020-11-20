@@ -5,14 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.kulikovskiy.jkh.jkhdataloader.config.JkhLocation;
-import ru.kulikovskiy.jkh.jkhdataloader.dao.HouseOrganizationRepository;
-import ru.kulikovskiy.jkh.jkhdataloader.dao.OrganizationRepository;
-import ru.kulikovskiy.jkh.jkhdataloader.dao.OrganizationRequisitesRepository;
+import ru.kulikovskiy.jkh.jkhdataloader.repository.HouseOrganizationRepository;
+import ru.kulikovskiy.jkh.jkhdataloader.repository.OrganizationRepository;
 import ru.kulikovskiy.jkh.jkhdataloader.entity.HouseOrganization;
 import ru.kulikovskiy.jkh.jkhdataloader.entity.HouseOrganizationIdentity;
 import ru.kulikovskiy.jkh.jkhdataloader.entity.Organization;
-import ru.kulikovskiy.jkh.jkhdataloader.entity.OrganizationRequisites;
-import ru.kulikovskiy.jkh.jkhdataloader.model.LocationParameter;
 import ru.kulikovskiy.jkh.jkhdataloader.model.OrganizationJkh;
 import ru.kulikovskiy.jkh.jkhdataloader.model.OrganizationJkhRequest;
 import ru.kulikovskiy.jkh.jkhdataloader.model.SearchOrgResponse;
@@ -27,17 +24,14 @@ import static ru.kulikovskiy.jkh.jkhdataloader.Constants.ITEM_PER_PAGE;
 public class OrganizationService {
     private final OrganizationRepository organizationRepository;
     private final RestTemplate jkhResttemplate;
-    private final OrganizationRequisitesRepository organizationRequisitesRepository;
     private final HouseOrganizationRepository houseOrganizationRepository;
     private final JkhLocation jkhLocation;
 
     public OrganizationService(OrganizationRepository organizationRepository,
                                RestTemplate jkhResttemplate,
-                               OrganizationRequisitesRepository organizationRequisitesRepository,
                                HouseOrganizationRepository houseOrganizationRepository, JkhLocation jkhLocation) {
         this.organizationRepository = organizationRepository;
         this.jkhResttemplate = jkhResttemplate;
-        this.organizationRequisitesRepository = organizationRequisitesRepository;
         this.houseOrganizationRepository = houseOrganizationRepository;
         this.jkhLocation = jkhLocation;
     }
@@ -47,7 +41,6 @@ public class OrganizationService {
         if (organizationJkhResponse.getBody().getOrganizationSummaryWithNsiList() != null) {
             organizationJkhResponse.getBody().getOrganizationSummaryWithNsiList().forEach(organizationJkh -> {
                 saveOrganization(organizationJkh);
-                saveOrganizationRequisites(organizationJkh);
                 saveOrganizationHouse(organizationJkh, houseGuid);
             });
         }
@@ -56,6 +49,7 @@ public class OrganizationService {
     private ResponseEntity<SearchOrgResponse> getOrganizationsHouse(String streetCode, String houseCode) {
         OrganizationJkhRequest organizationJkhRequest = new OrganizationJkhRequest(jkhLocation.getRegionCode(), jkhLocation.getCityCode(), streetCode, houseCode);
         HttpHeaders headers = new HttpHeaders();
+
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString());
         HttpEntity<OrganizationJkhRequest> request = new HttpEntity<>(organizationJkhRequest, headers);
 
@@ -74,6 +68,9 @@ public class OrganizationService {
         organization.setOrgResponse(organizationJkh.toString());
         organization.setPhone(organizationJkh.getPhone());
         organization.setShortName(organizationJkh.getShortName());
+        organization.setInn(organizationJkh.getInn());
+        organization.setKpp(organizationJkh.getKpp());
+        organization.setOgrn(organizationJkh.getOgrn());
         organizationRepository.save(organization);
     }
 
@@ -81,15 +78,5 @@ public class OrganizationService {
         HouseOrganizationIdentity houseOrganizationIdentity = new HouseOrganizationIdentity(houseGuid, organization.getGuid());
         HouseOrganization houseOrganization = Optional.ofNullable(houseOrganizationRepository.findById(houseOrganizationIdentity)).get().orElse(new HouseOrganization(houseOrganizationIdentity));
         houseOrganizationRepository.save(houseOrganization);
-    }
-
-    private void saveOrganizationRequisites(OrganizationJkh organization) {
-        OrganizationRequisites organizationRequisites = Optional.of(organizationRequisitesRepository.findById(organization.getGuid())).get().orElse(new OrganizationRequisites());
-        organizationRequisites.setGuid(organization.getGuid());
-        ofNullable(organization.getInn()).ifPresent(organizationRequisites::setInn);
-        ofNullable(organization.getKpp()).ifPresent(organizationRequisites::setKpp);
-        ofNullable(organization.getOgrn()).ifPresent(organizationRequisites::setOgrn);
-        organizationRequisites.setOrgResponse(organization.toString());
-        organizationRequisitesRepository.save(organizationRequisites);
     }
 }

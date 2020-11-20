@@ -3,6 +3,7 @@ package ru.kulikovskiy.jkh.jkhdataloader.model;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class HouseJkh {
@@ -35,4 +36,16 @@ public class HouseJkh {
     private String actualHouseGuid;
     private Oktmo oktmo;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HouseJkh)) return false;
+        HouseJkh houseJkh = (HouseJkh) o;
+        return Objects.equals(guid, houseJkh.guid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guid);
+    }
 }

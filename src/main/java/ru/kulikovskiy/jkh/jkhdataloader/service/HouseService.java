@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.kulikovskiy.jkh.jkhdataloader.config.JkhGosuslugiConfig;
-import ru.kulikovskiy.jkh.jkhdataloader.dao.HouseRepository;
+import ru.kulikovskiy.jkh.jkhdataloader.repository.HouseRepository;
 import ru.kulikovskiy.jkh.jkhdataloader.entity.House;
 import ru.kulikovskiy.jkh.jkhdataloader.model.HouseJkh;
 

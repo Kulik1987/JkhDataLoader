@@ -1,4 +1,4 @@
-package ru.kulikovskiy.jkh.jkhdataloader.rs;
+package ru.kulikovskiy.jkh.jkhdataloader.restcontroller;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
